@@ -14,7 +14,7 @@ public class ReplyMSGHeader extends AbstractHeader{
     @Override
     public String toString() {
         return super.toString()
-                .concat("author:"+this.author)
+                .concat(" author:"+this.author)
                 .concat(" reply_to_id:"+this.msgId);
     }
 }

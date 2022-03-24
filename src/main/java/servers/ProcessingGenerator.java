@@ -1,9 +1,14 @@
 package servers;
 
-public class ProcessingGenetor implements QueryProcessingGenerator<QueryProcessing,String> {
+import servers.QueryProcessingGenerator;
+import servers.queryprocessing.PublishQueryProcessing;
+import servers.queryprocessing.QueryProcessing;
+
+public class ProcessingGenerator implements QueryProcessingGenerator<QueryProcessing,String> {
     @Override
     public QueryProcessing accept(String element) {
-        return null;
+
+        return getProcessing(element);
     }
 
     private QueryProcessing getProcessing(String code) {

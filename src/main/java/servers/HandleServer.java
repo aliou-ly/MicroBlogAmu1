@@ -1,6 +1,7 @@
 package servers;
 
-import javax.swing.plaf.ScrollBarUI;
+import servers.queryprocessing.QueryProcessing;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -15,7 +16,7 @@ public class HandleServer extends Thread {
         this.socket = socket;
         this.out = new PrintWriter(this.socket.getOutputStream());
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.generator = new ProcessingGenetor();
+        this.generator = new ProcessingGenerator();
     }
 
     @Override
@@ -30,10 +31,12 @@ public class HandleServer extends Thread {
 
         if (buffer != null) {
            Scanner scanner = new Scanner(buffer);
-           while (scanner.hasNext()) {
-                generator.accept(scanner.next()).setSocket(this.socket);
-           }
-           out.flush();
+           QueryProcessing queryProcessing;
+           queryProcessing = generator.accept(scanner.next());
+
+           queryProcessing.setSocket(this.socket);
+           queryProcessing.setRequest(buffer);
+           queryProcessing.executeProcess();
         }
 
         out.close();

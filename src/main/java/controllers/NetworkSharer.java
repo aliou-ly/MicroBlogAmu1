@@ -13,8 +13,7 @@ public class NetworkSharer implements Sharers{
         Socket socketUser = new Socket("localhost", 12345);
         PrintWriter out  = new PrintWriter(socketUser.getOutputStream());
 
-        out.println(request.getHeader());
-        out.println(request.getMessage());
+        out.println(request);
 
         out.flush();
         out.close();
