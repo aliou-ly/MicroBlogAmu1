@@ -1,30 +1,39 @@
+import factories.Factory;
 import groovy.json.JsonBuilder;
+import groovy.json.JsonParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONWriter;
+import requests.Requests;
 import servers.HandleServer;
+import users.NetworkUser;
 import users.Users;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Scanner;
 
 public class MainServer {
     static Users<String> testUser;
 
 
     public static void main(String[] args) throws IOException {
-        JSONObject test = new JSONObject();
-        test.put("author","testUser");
-        test.put("msgId","sjwdkjw");
-        test.put("limit",5);
+        testUser = new NetworkUser("@testUser","localhost",12345);
+        JSONObject jsonObject = new JSONObject();
+        Factory factory = new Factory();
+        Requests request = factory.createPublishRequest(testUser);
+        System.out.println(request);
+        Scanner scanner = new Scanner(request.toString());
+        scanner.next();
+        Scanner scanner1 = new Scanner(scanner.next()).useDelimiter(":");
+        jsonObject.put(scanner1.next(),scanner1.next());
+        StringBuilder message  = new StringBuilder();
+        while (scanner.hasNextLine())
+            message.append("\n").append(scanner.nextLine());
+        jsonObject.put("message",message);
+        System.out.println("\njsonObjet: "+jsonObject);
 
-        JSONObject test2 = new JSONObject();
-        test2.put("author","dhj");
-        test2.put("msgId"," dsdwgs");
-        test2.put("limit",0);
 
-        JSONArray msg = new JSONArray();
-        msg.put(test);
-        msg.put(test2);
-        System.out.println(msg);
     }
 }

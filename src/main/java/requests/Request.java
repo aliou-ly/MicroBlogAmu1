@@ -37,8 +37,7 @@ public class Request implements Requests {
 
     @Override
     public String toString() {
-        return header.toString() + "\r\n"
-                +message.toString();
+        return header+ "\r\n"+ message;
     }
 
 

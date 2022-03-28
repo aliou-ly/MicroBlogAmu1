@@ -7,6 +7,8 @@ public class PublishQueryProcessing extends AbstractQueryProcessing {
 
     @Override
     public void executeProcess() {
+
         separate();
+
     }
 }

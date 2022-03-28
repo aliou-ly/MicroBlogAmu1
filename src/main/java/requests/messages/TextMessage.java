@@ -26,7 +26,7 @@ public class TextMessage implements Messages {
     @Override
     public String toString() {
 
-        return author.toString()+" "+sendDate+ "\n"
+        return author+" "+sendDate+ "\n"
                 +text;
     }
 
