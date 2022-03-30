@@ -1,40 +1,60 @@
 package servers.queryprocessing;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import servers.queryprocessing.AbstractQueryProcessing;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 
 public class PublishQueryProcessing extends AbstractQueryProcessing {
+    public static Reader reader;
 
+    static {
+        try {
+            reader = Files.newBufferedReader(Path.of("publish.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
-    public void executeProcess() {
+    public void  executeProcess() throws IOException, ParseException {
         separate();
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObjectFile = (JSONObject) parser.parse(reader);
+        Scanner headerScanner = new Scanner(this.header);
+        long id  = new Date().getTime();
+        headerScanner.next();
+        headerScanner = new Scanner(headerScanner.next()).useDelimiter(":");
+        headerScanner.next();
+        String author = headerScanner.next();
 
-        // Author Section
-        JSONObject author = new JSONObject();
-        author.put("author", this.header);
+        if (jsonObjectFile.containsKey(author)) {
+            JSONObject details  = (JSONObject) jsonObjectFile.get(author);
+            JSONObject listMessage  = (JSONObject) details.get("listMessage");
+            listMessage.put(id,this.message);
 
-        // Structure of the message - TODO - Generate the id
-        JSONObject messageDetails = new JSONObject();
-        messageDetails.put("msgId", "test");
-        messageDetails.put("txt",this.message);
+            details.replace("listMessage",listMessage);
+            jsonObjectFile.replace(author,details);
+        } else {
+            JSONObject listMessage = new JSONObject();
+            listMessage.put(id,this.message);
 
-        //Add message to list
-        // L'idée aurait normalement été d'interroger s'il l'auteur est déjà dans notre fichier que ça rajoute
-        // le message à la suite de la liste déjà existante.
-        JSONArray message = new JSONArray();
-        message.put(messageDetails);
-        // Attach the messages to the user
-        author.put("Message List", message);
+            jsonObjectFile.put(author,
+                    new JSONObject().put("listMessage",listMessage));
 
-        //Write JSON file
-        try (FileWriter file = new FileWriter("test.json",true)) {
+        }
+
+        try (FileWriter file = new FileWriter("publish.json")) {
             //We can write any JSONArray or JSONObject instance to the file
-            file.write(author.toString(4)+",\n");
+            file.write(jsonObjectFile.toString());
             file.flush();
 
         } catch (IOException e) {

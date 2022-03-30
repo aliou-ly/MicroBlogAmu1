@@ -37,8 +37,11 @@ public class Request implements Requests {
 
     @Override
     public String toString() {
-        return header.toString() + "\r\n"
-                +message.toString();
+        String request = header.toString();
+        if (message != null)
+            request.concat("\n"+message);
+
+        return request;
     }
 
 
