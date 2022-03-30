@@ -1,39 +1,47 @@
-import factories.Factory;
-import groovy.json.JsonBuilder;
-import groovy.json.JsonParser;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONWriter;
-import requests.Requests;
-import servers.HandleServer;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import users.NetworkUser;
 import users.Users;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.util.Scanner;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Iterator;
 
 public class MainServer {
     static Users<String> testUser;
 
 
-    public static void main(String[] args) throws IOException {
-        testUser = new NetworkUser("@testUser","localhost",12345);
-        JSONObject jsonObject = new JSONObject();
-        Factory factory = new Factory();
-        Requests request = factory.createPublishRequest(testUser);
-        System.out.println(request);
-        Scanner scanner = new Scanner(request.toString());
-        scanner.next();
-        Scanner scanner1 = new Scanner(scanner.next()).useDelimiter(":");
-        jsonObject.put(scanner1.next(),scanner1.next());
-        StringBuilder message  = new StringBuilder();
-        while (scanner.hasNextLine())
-            message.append("\n").append(scanner.nextLine());
-        jsonObject.put("message",message);
-        System.out.println("\njsonObjet: "+jsonObject);
+    public static void main(String[] args) throws IOException, ParseException {
+        testUser  = new NetworkUser("@testUser","localhost",12345);
+        Reader reader = Files.newBufferedReader(Path.of("Publish.json"));
+        JSONParser parser = new JSONParser();
+        JSONArray jsonArray = (JSONArray) parser.parse(reader);
+       // System.out.println(jsonArray);
 
+        for (Iterator it = jsonArray.stream().iterator(); it.hasNext(); ) {
+            JSONObject jsonObject1 = (JSONObject) it.next();
+            if (jsonObject1.containsKey("@testUser")) ;
+                JSONObject details = (JSONObject) jsonObject1.get("@testUser");
+                JSONArray ListMessage  = (JSONArray) details.get("Message List");
+                System.out.println(ListMessage);
+                JSONObject newMessage = new JSONObject();
+                newMessage.put("id2","bidue");
+                newMessage.put("text","bdjceaoks");
+                ListMessage.add(newMessage);
 
+            try (FileWriter file = new FileWriter("Publish.json")) {
+                //We can write any JSONArray or JSONObject instance to the file
+                file.write(String.valueOf(jsonArray));
+                file.flush();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
