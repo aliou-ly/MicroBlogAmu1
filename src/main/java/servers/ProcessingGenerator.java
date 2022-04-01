@@ -1,8 +1,8 @@
 package servers;
 
-import servers.QueryProcessingGenerator;
 import servers.queryprocessing.PublishQueryProcessing;
 import servers.queryprocessing.QueryProcessing;
+import servers.queryprocessing.ReplyProcessing;
 import servers.queryprocessing.RepublishProcessing;
 
 public class ProcessingGenerator implements QueryProcessingGenerator<QueryProcessing,String> {
@@ -18,6 +18,8 @@ public class ProcessingGenerator implements QueryProcessingGenerator<QueryProces
                 return new PublishQueryProcessing();
             case "REPUBLISH":
                 return new RepublishProcessing();
+            case "REPLY":
+                return new ReplyProcessing();
             default:
                 return null;
 

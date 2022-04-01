@@ -44,7 +44,9 @@ public class HandleServer extends Thread {
             queryProcessing.setRequest(buffer);
 
             try {
-                queryProcessing.executeProcess();
+                out.println(
+                    queryProcessing.executeProcess()
+                );
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ParseException e) {

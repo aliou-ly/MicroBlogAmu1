@@ -3,6 +3,8 @@ package servers.queryprocessing;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import servers.ErrorResponse;
+import servers.Responses;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -10,7 +12,7 @@ import java.util.Scanner;
 public class RepublishProcessing extends AbstractQueryProcessing {
 
     @Override
-    public void executeProcess() throws IOException, ParseException {
+    public Responses executeProcess() throws IOException, ParseException {
         separate();
 
         JSONParser parser  = new JSONParser();
@@ -46,11 +48,11 @@ public class RepublishProcessing extends AbstractQueryProcessing {
 
 
                 write(jsonObjectFile, publishAuthorsFile);
-                //todo
-                return;
+                return new OkResponse();
 
             }
 
         }
+        return new ErrorResponse();
     }
 }

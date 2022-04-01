@@ -4,7 +4,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import javax.security.sasl.SaslClient;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -68,9 +67,8 @@ public abstract class AbstractQueryProcessing implements QueryProcessing {
 
     void separate() {
         Scanner scanner = new Scanner(request);
-       // this.header  = scanner.nextLine();
-        this.headerScanner = new Scanner(scanner.nextLine());
-        headerScanner.next();
+        this.header  = scanner.nextLine();
+        //this.headerScanner = new Scanner(request).nextLine()
         StringBuilder stringBuilder = new StringBuilder();
         while (scanner.hasNextLine()) {
             stringBuilder.append(scanner.nextLine()+"\n");
@@ -78,18 +76,7 @@ public abstract class AbstractQueryProcessing implements QueryProcessing {
         }
         message = stringBuilder.toString();
     }
-
     public boolean headerHasNextValue() {
-        return headerScanner.hasNext();
-    }
-
-    public String getHeaderNextValue() {
-
-        if (headerHasNextValue()) {
-            Scanner scanner = new Scanner(headerScanner.next()).useDelimiter(":");
-            scanner.next();
-            return scanner.next();
-        }
-        return null;
+        return true;
     }
 }

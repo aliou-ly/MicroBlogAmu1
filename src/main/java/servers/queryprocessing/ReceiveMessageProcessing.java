@@ -2,7 +2,7 @@ package servers.queryprocessing;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-import servers.queryprocessing.AbstractQueryProcessing;
+import servers.Responses;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class ReceiveMessageProcessing extends AbstractQueryProcessing {
 
     @Override
-    public void executeProcess() throws IOException, ParseException {
+    public Responses executeProcess() throws IOException, ParseException {
         separate();
         JSONObject publishedMessage = getJsonObjectFile(messagePublishedFile);
         Scanner headerScanner = new Scanner(header);
@@ -25,6 +25,7 @@ public class ReceiveMessageProcessing extends AbstractQueryProcessing {
             JSONObject jsonID = (JSONObject) jsonMessage.get(msgID);
 
         }
+        return null;
     }
     
 }
