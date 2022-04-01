@@ -3,6 +3,7 @@ package servers;
 import servers.QueryProcessingGenerator;
 import servers.queryprocessing.PublishQueryProcessing;
 import servers.queryprocessing.QueryProcessing;
+import servers.queryprocessing.RepublishProcessing;
 
 public class ProcessingGenerator implements QueryProcessingGenerator<QueryProcessing,String> {
     @Override
@@ -15,6 +16,8 @@ public class ProcessingGenerator implements QueryProcessingGenerator<QueryProces
         switch (code) {
             case "PUBLISH":
                 return new PublishQueryProcessing();
+            case "REPUBLISH":
+                return new RepublishProcessing();
             default:
                 return null;
 

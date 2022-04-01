@@ -39,7 +39,7 @@ public class Request implements Requests {
     public String toString() {
         String request = header.toString();
         if (message != null)
-            request.concat("\n"+message);
+            request = request.concat("\n"+message);
 
         return request;
     }
