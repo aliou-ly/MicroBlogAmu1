@@ -1,9 +1,6 @@
 package servers;
 
-import servers.queryprocessing.PublishQueryProcessing;
-import servers.queryprocessing.QueryProcessing;
-import servers.queryprocessing.ReplyProcessing;
-import servers.queryprocessing.RepublishProcessing;
+import servers.queryprocessing.*;
 
 public class ProcessingGenerator implements QueryProcessingGenerator<QueryProcessing,String> {
     @Override
@@ -20,6 +17,8 @@ public class ProcessingGenerator implements QueryProcessingGenerator<QueryProces
                 return new RepublishProcessing();
             case "REPLY":
                 return new ReplyProcessing();
+            case "RCV_MSG":
+                return new ReceiveMessageProcessing();
             default:
                 return null;
 
