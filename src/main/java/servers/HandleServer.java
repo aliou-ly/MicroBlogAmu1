@@ -1,5 +1,6 @@
 package servers;
 
+import org.json.simple.parser.ParseException;
 import servers.queryprocessing.QueryProcessing;
 
 import java.io.*;
@@ -20,23 +21,35 @@ public class HandleServer extends Thread {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         String buffer = null;
 
-        try {
-            buffer = in.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
+        StringBuilder builder  = new StringBuilder();
+        Scanner scanner1 = new Scanner(in);
+
+        if (scanner1.hasNextLine()) {
+            while (scanner1.hasNextLine())
+                builder.append(scanner1.nextLine()+"\n");
+
+            buffer = builder.toString();
         }
 
-        if (buffer != null) {
-           Scanner scanner = new Scanner(buffer);
-           QueryProcessing queryProcessing;
-           queryProcessing = generator.accept(scanner.next());
 
-           queryProcessing.setSocket(this.socket);
-           queryProcessing.setRequest(buffer);
-           queryProcessing.executeProcess();
+        if (buffer != null) {
+            Scanner scanner = new Scanner(buffer);
+            QueryProcessing queryProcessing;
+            queryProcessing = generator.accept(scanner.next());
+
+            queryProcessing.setSocket(this.socket);
+            queryProcessing.setRequest(buffer);
+
+            try {
+                queryProcessing.executeProcess();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         out.close();
