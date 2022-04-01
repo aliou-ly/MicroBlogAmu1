@@ -2,6 +2,7 @@ package servers.queryprocessing;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import servers.Responses;
 
 import java.io.IOException;
 import java.util.Date;
@@ -11,7 +12,7 @@ public class PublishQueryProcessing extends AbstractQueryProcessing {
 
 
     @Override
-    public void  executeProcess() throws IOException, ParseException {
+    public Responses executeProcess() throws IOException, ParseException {
         separate();
         JSONObject jsonObjectFile = getJsonObjectFile(publishAuthorsFile);
 
@@ -48,5 +49,6 @@ public class PublishQueryProcessing extends AbstractQueryProcessing {
         write(jsonMessagePublished,messagePublishedFile);
         write(jsonObjectFile, publishAuthorsFile);
 
+        return null;
     }
 }

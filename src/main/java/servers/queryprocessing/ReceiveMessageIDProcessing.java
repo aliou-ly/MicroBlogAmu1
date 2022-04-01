@@ -1,11 +1,12 @@
 package servers.queryprocessing;
 
-import servers.queryprocessing.AbstractQueryProcessing;
+import servers.Responses;
 
 public class ReceiveMessageIDProcessing extends AbstractQueryProcessing {
 
     @Override
-    public void executeProcess() {
+    public Responses executeProcess() {
         separate();
+        return null;
     }
 }
