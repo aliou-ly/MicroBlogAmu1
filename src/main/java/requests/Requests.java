@@ -10,4 +10,5 @@ public interface Requests {
     Messages getMessage();
     Responses getResponse();
     void setResponse(Responses response);
+    String toString();
 }
