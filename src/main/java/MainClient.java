@@ -14,7 +14,7 @@ public class MainClient {
 
     static Scanner keyboardInput = new Scanner(System.in);
     public static void main(String[] args) throws IOException {
-        testUser = new NetworkUser("@testUser5","localhost",12345);
+        testUser = new NetworkUser("@aliou","localhost",12345);
         System.out.println(testUser);
         do {
             System.out.println("Veuillez choisir une option:");

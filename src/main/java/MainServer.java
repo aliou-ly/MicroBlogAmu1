@@ -13,9 +13,9 @@ public class MainServer {
 
     public static void main(String[] args) throws IOException, ParseException {
         testUser  = new NetworkUser("@testUser","localhost",12345);
-
+        ServerSocket serverSocket = new ServerSocket(12345);
         while (true)
-            new HandleServer(new ServerSocket(12345).accept()).run();
+            new HandleServer(serverSocket.accept()).run();
     }
 }
 
