@@ -6,6 +6,7 @@ import requests.messages.Messages;
 import requests.Requests;
 
 import java.io.IOException;
+import java.net.Socket;
 
 public class AbstractUsers<E> implements Users<E> {
    protected String name;
@@ -42,6 +43,16 @@ public class AbstractUsers<E> implements Users<E> {
 
     @Override
     public void unRegisters(Users<E> user) {
+
+    }
+
+    @Override
+    public Socket getSocket() {
+        return null;
+    }
+
+    @Override
+    public void closeSocket() {
 
     }
 }
