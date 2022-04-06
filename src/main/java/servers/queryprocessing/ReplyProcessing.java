@@ -27,6 +27,7 @@ public class ReplyProcessing extends AbstractQueryProcessing {
         String msgID = scanner.next();
 
         long id = new Date().getTime();
+        System.out.println(jsonObjectFile.containsKey(author));
         if (jsonObjectFile.containsKey(author)) {
             JSONObject jsonAuthor = (JSONObject) jsonObjectFile.get(author);
             JSONObject listMessage  = (JSONObject) jsonAuthor.get("listMessage");

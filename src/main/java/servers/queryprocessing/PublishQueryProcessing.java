@@ -49,6 +49,6 @@ public class PublishQueryProcessing extends AbstractQueryProcessing {
         write(jsonMessagePublished,messagePublishedFile);
         write(jsonObjectFile, publishAuthorsFile);
 
-        return null;
+        return new OkResponse();
     }
 }

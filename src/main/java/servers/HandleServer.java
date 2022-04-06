@@ -12,7 +12,7 @@ public class HandleServer extends Thread {
     private PrintWriter out;
     private BufferedReader in;
     private QueryProcessingGenerator<QueryProcessing,String> generator;
-
+    private Responses response;
     public HandleServer(Socket socket) throws IOException {
         this.socket = socket;
         this.out = new PrintWriter(this.socket.getOutputStream());
@@ -33,7 +33,7 @@ public class HandleServer extends Thread {
 
             buffer = builder.toString();
         }
-
+        System.out.println(buffer);
 
         if (buffer != null) {
             Scanner scanner = new Scanner(buffer);
@@ -44,16 +44,15 @@ public class HandleServer extends Thread {
             queryProcessing.setRequest(buffer);
 
             try {
-                out.println(
-                    queryProcessing.executeProcess()
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
+                response = queryProcessing.executeProcess();
+                System.out.println(response);
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
         }
-
+        out.println(response);
+        out.flush();
+        System.out.println("requete terminé.");
         out.close();
         try {
             in.close();

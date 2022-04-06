@@ -21,26 +21,38 @@ public class ReceiveMessageProcessing extends AbstractQueryProcessing {
         String msgID = scanner.next();
 
         if (publishedMessage.containsKey(msgID)) {
-            JSONObject jsonObject = getJsonObjectFile(publishAuthorsFile);
-            String author = publishedMessage.get(msgID).toString();
-            JSONObject jsonAuthor = (JSONObject) jsonObject.get(author);
-            JSONObject jsonMessage  = (JSONObject) jsonAuthor.get("listMessage");
-            JSONObject jsonID = (JSONObject) jsonMessage.get(msgID);
-            StringBuilder builder = new StringBuilder();
-            builder.append(author)
-                    .append(" "+msgID);
-            if (jsonID.containsKey("replyToId")) {
-                builder.append(" replyToId:")
-                        .append(jsonID.get("replyToId"));
-            }
-            if (jsonID.containsKey("republished")) {
-                builder.append(" republished:")
-                        .append(jsonID.get("republished"));
-            };
-            builder.append("\n").append(jsonID.get("text"));
-            return new MsgResponse(builder.toString());
+            String author = (String) publishedMessage.get(msgID);
+            String text = getMessage(author,msgID);
+            if (text != null)
+                return new MsgResponse(text);
         }
         return new ErrorResponse();
+    }
+
+    private String getMessage(String author, String msgID) throws IOException, ParseException {
+        JSONObject jsonObject = getJsonObjectFile(publishAuthorsFile);
+
+        if (!jsonObject.containsKey(author))
+            return null;
+        JSONObject jsonAuthor = (JSONObject) jsonObject.get(author);
+        JSONObject listMessage = (JSONObject) jsonAuthor.get("listMessage");
+
+        if (!listMessage.containsKey(msgID))
+            return null;
+        JSONObject jsonID = (JSONObject) listMessage.get(msgID);
+        StringBuilder text = new StringBuilder();
+
+        text.append("ID:"+msgID);
+
+        if (jsonID.containsKey("replyToId"))
+            text.append(" replyToId:"+jsonID.get("replyToId"));
+        if (jsonID.containsKey("republished"))
+            text.append(" republished:"+jsonID.get("republished"));
+
+        text.append("\n"+jsonID.get("text"));
+
+        return text.toString();
+
     }
     
 }
